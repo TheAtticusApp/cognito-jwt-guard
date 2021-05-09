@@ -1,5 +1,5 @@
 {
-    "name": "benbjurstrom/cognito-jwt-guard",
+    "name": "theatticusapp/cognito-jwt-guard",
     "description": "A laravel auth guard for JSON Web Tokens issued by Amazon AWS Cognito",
     "type": "laravel",
     "keywords": [
@@ -31,12 +31,12 @@
     "require": {
         "php": ">=5.5.0",
         "ext-json": "*",
-        "illuminate/auth": "^5.1|^6",
-        "illuminate/contracts": "^5.1|^6",
-        "illuminate/http": "^5.1|^6",
-        "illuminate/support": "^5.1|^6",
+        "illuminate/auth": "^5.1|^6|^8.0",
+        "illuminate/contracts": "^5.1|^6|^8.0",
+        "illuminate/http": "^5.1|^6|^8.0",
+        "illuminate/support": "^5.1|^6|^8.0",
         "firebase/php-jwt": "^5.0",
-        "guzzlehttp/guzzle": "^6.2.1",
+        "guzzlehttp/guzzle": "^6.2.1|^7.0",
         "phpseclib/phpseclib": "^2.0"
     },
     "require-dev": {

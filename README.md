@@ -1,4 +1,6 @@
 # Cognito JWT Guard
+[See original: benbjurstrom/cognito-jwt-guard](https://github.com/benbjurstrom/cognito-jwt-guard/)
+
 Laravel authorization guard for JSON Web Tokens issued by Amazon AWS Cognito
 
 [![Build Status](https://github.com/benbjurstrom/cognito-jwt-guard/workflows/build/badge.svg?branch=master)](https://packagist.org/packages/benbjurstrom/cognito-jwt-guard?branch=master)
@@ -20,7 +22,7 @@ Laravel authorization guard for JSON Web Tokens issued by Amazon AWS Cognito
 You can install the package using composer
 
 ```shell script
-composer require benbjurstrom/cognito-jwt-guard
+composer require theatticusapp/cognito-jwt-guard
 ```
 
 Next publish the [migration](https://github.com/benbjurstrom/cognito-jwt-guard/blob/master/database/migrations/add_cognito_uuid_to_users_table.php.stub) and the [config/cognito.php](https://github.com/benbjurstrom/cognito-jwt-guard/blob/master/config/cognito.php) config file with:
