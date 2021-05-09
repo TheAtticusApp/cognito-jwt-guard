@@ -31,9 +31,10 @@
     "require": {
         "php": ">=5.5.0",
         "ext-json": "*",
-        "illuminate/contracts": "^8.0",
-        "illuminate/http": "^8.0",
-        "illuminate/support": "^8.0",
+        "illuminate/auth": "^8.40",
+        "illuminate/contracts": "^8.40",
+        "illuminate/http": "^8.40",
+        "illuminate/support": "^8.40",
         "firebase/php-jwt": "^5.0",
         "guzzlehttp/guzzle": "^7.3",
         "phpseclib/phpseclib": "^2.0"
