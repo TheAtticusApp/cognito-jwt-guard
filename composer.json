@@ -2,6 +2,7 @@
     "name": "theatticusapp/cognito-jwt-guard",
     "description": "A laravel auth guard for JSON Web Tokens issued by Amazon AWS Cognito",
     "type": "laravel",
+    "version" : "0.3.0",
     "keywords": [
         "cognito",
         "jwt",
