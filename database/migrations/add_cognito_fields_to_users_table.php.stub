@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddCognitoUuidToUsersTable extends Migration
+class AddCognitoFieldsToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,6 +15,7 @@ class AddCognitoUuidToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->uuid('cognito_uuid')->nullable()->unique();
+            $table->string('cognito_groups', 120)->nullable();
         });
     }
 
@@ -28,6 +29,7 @@ class AddCognitoUuidToUsersTable extends Migration
         if(Schema::hasColumn('users','cognito_uuid')) {
             Schema::table('users', function (Blueprint $table) {
                 $table->dropColumn('cognito_uuid');
+                $table->dropColumn('cognito_groups');
             });
         }
     }

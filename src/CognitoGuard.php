@@ -51,9 +51,13 @@ class CognitoGuard implements Guard
             return null;
         }
 
-        $cognitoUuid = $ts->getCognitoUuidFromToken($jwt);
+        $payload = $ts->getPayloadFromToken($jwt);
+        $cognitoUuid = $ts->getCognitoUuidFromPayload($payload);
+        if (config('cognito.sso_groups')) {
+            $cognitoGroups = $ts->getCognitoGroupsFromPayload($payload, false);
+        }
 
-        return $this->user = $this->provider->getCognitoUser($cognitoUuid, $jwt);
+        return $this->user = $this->provider->getCognitoUser($cognitoUuid, $jwt, $cognitoGroups);
     }
 
     /**

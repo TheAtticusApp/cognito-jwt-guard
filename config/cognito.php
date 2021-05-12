@@ -42,5 +42,6 @@ return [
     'sso_user_attributes'   => [
         'name',
         'email',
-    ]
+    ],
+    'sso_groups'            => env('SSO_GROUPS', false)
 ];

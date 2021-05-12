@@ -32,9 +32,10 @@ class ProviderRepository
     /**
      * @param string $cognitoUuid
      * @param string $jwt
+     * @param string $cognitoGroups
      * @return Authenticatable | null
      */
-    public function getCognitoUser(string $cognitoUuid, $jwt) {
+    public function getCognitoUser(string $cognitoUuid, $jwt, $cognitoGroups) {
         $model = $this->provider->createModel();
         $user = $model->where('cognito_uuid', $cognitoUuid)->first();
 
@@ -42,17 +43,18 @@ class ProviderRepository
             return $user;
         }
 
-        return $this->createSsoUser($cognitoUuid, $jwt);
+        return $this->createSsoUser($cognitoUuid, $jwt, $cognitoGroups);
     }
 
 
     /**
      * @param string $cognitoUuid
      * @param string $jwt
-     * @return Model
+     * @param string $cognitoGroups
+     * @return Model|null
      * @throws
      */
-    public function createSsoUser($cognitoUuid, $jwt): Model
+    public function createSsoUser($cognitoUuid, $jwt, $cognitoGroups)
     {
         if(!config('cognito.sso')){
             return null;
@@ -64,9 +66,12 @@ class ProviderRepository
         $user = $this->provider->createModel();
         $user->cognito_uuid = $cognitoUuid;
         foreach($requiredKeys as $requiredKey){
-            $user->$requiredKey = $attributes[$requiredKey];
+            $key = strpos($requiredKey, 'custom:', 0) ? substr($requiredKey, 7) : $requiredKey;
+            $user->$key = $attributes[$key];
         }
-
+        if ($cognitoGroups) {
+            $user->cognito_groups = $cognitoGroups;
+        }
         if($repositoryClass = config('cognito.sso_repository_class')){
             $repository = resolve($repositoryClass);
 

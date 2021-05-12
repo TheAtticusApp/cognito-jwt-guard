@@ -28,17 +28,42 @@ class TokenService
 
     /**
      * @param string $jwt
+     * @return mixed
+     * @throws \Throwable
+     */
+    public function getPayloadFromToken(string $jwt){
+        $payload = $this->decode($jwt);
+        $this->validatePayload($payload);
+        return $payload;
+    }
+
+    /**
+     * @param $payload
+     * @return mixed
+     * @throws \Throwable
+     */
+    public function getCognitoUuidFromPayload($payload){
+        $cognitoUuid = $payload->username ?? $payload->{'cognito:username'};
+        throw_unless($cognitoUuid, new Exception ('CognitoUuid not found'));
+        return $cognitoUuid;
+    }
+
+    /**
+     * @param $payload
      * @return string
      * @throws \Throwable
      */
-    public function getCognitoUuidFromToken(string $jwt){
-        $payload = $this->decode($jwt);
-        $this->validatePayload($payload);
-
-        $cognitoUuid = $payload->username ?? $payload->{'cognito:username'};
-        throw_unless($cognitoUuid, new Exception ('CognitoUuid not found'));
-
-        return $cognitoUuid;
+    public function getCognitoGroupsFromPayload($payload, $throw = false){
+        try {
+            $cognitoGroups = $payload->{'cognito:groups'};
+            throw_unless($cognitoGroups, new Exception ('CognitoGroups not found'));
+            $groupsCollection = collect($cognitoGroups);
+            return implode(',', $groupsCollection->all());
+        } catch (Exception $error) {
+            if ($throw) {
+                throw new Exception('CognitoGroups not found. ');
+            }
+        }
     }
 
     /**
