@@ -43,5 +43,6 @@ return [
         'name',
         'email',
     ],
-    'sso_groups'            => env('SSO_GROUPS', false)
+    'error_if_missing_attr' => true,
+    'sso_groups'            => env('SSO_GROUPS', false),
 ];

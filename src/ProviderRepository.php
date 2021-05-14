@@ -3,6 +3,7 @@
 namespace BenBjurstrom\CognitoGuard;
 
 use BenBjurstrom\CognitoGuard\Exceptions\MissingRequiredAttributesException;
+use Exception;
 use Illuminate\Auth\EloquentUserProvider;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
@@ -51,23 +52,27 @@ class ProviderRepository
      * @param string $cognitoUuid
      * @param string $jwt
      * @param string $cognitoGroups
-     * @return Model|null
+     * @return Model
      * @throws
      */
-    public function createSsoUser($cognitoUuid, $jwt, $cognitoGroups)
+    public function createSsoUser($cognitoUuid, $jwt, $cognitoGroups): Model
     {
         if(!config('cognito.sso')){
             return null;
         };
 
         $attributes = $this->getAttributes($jwt);
-        $requiredKeys = collect(config('cognito.sso_user_attributes'));
+        $attributeKeys = collect(config('cognito.sso_user_attributes'));
 
         $user = $this->provider->createModel();
         $user->cognito_uuid = $cognitoUuid;
-        foreach($requiredKeys as $requiredKey){
-            $key = strpos($requiredKey, 'custom:', 0) ? substr($requiredKey, 7) : $requiredKey;
-            $user->$key = $attributes[$key];
+        foreach($attributeKeys as $attributeKey){
+            $key = strpos($attributeKey, 'custom:', 0) ? substr($attributeKey, 7) : $attributeKey;
+            try {
+                $user->$key = $attributes[$key];
+            } catch (Exception $e) {
+                // if config('error_if_missing_attr') will be caught in getAttributes
+            }
         }
         if ($cognitoGroups) {
             $user->cognito_groups = $cognitoGroups;
@@ -97,7 +102,9 @@ class ProviderRepository
         $attributes = $uas->getUserAttributesFromToken($jwt);
         $requiredKeys = collect(config('cognito.sso_user_attributes'));
 
-        $this->validateAttributes($attributes, $requiredKeys);
+        if (config('cognito.error_if_missing_attr')) {
+            $this->validateAttributes($attributes, $requiredKeys);
+        }
 
         return $attributes;
     }
