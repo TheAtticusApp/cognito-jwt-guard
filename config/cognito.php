@@ -35,6 +35,18 @@ return [
     | of the the auth provider's user model to the given class's
     | createCognitoUser method. The users model will be hydrated with the given
     | sso_user_attributes before it is passed.
+    | This will require the user table has the appropriate fields created. Add
+    | these to the data base migration.
+    | example: $table->string('given_name', 255)->nullable();
+    |
+    | error_if_missing_attr will cause the app to through an error if any
+    | of the sso_user_attributes are missing from the cognito response making them
+    | effectively required.  error_if_missing_attr=false makes them optional
+    |
+    | sso_groups will copy the user pool group field to a field in the user table
+    | this requires a cognito_groups field in the user table also.  multiple groups
+    | will be comma delimited.
+    |
     */
 
     'sso'                   => env('SSO', false),
