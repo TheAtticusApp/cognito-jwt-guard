@@ -15,7 +15,8 @@ class AddCognitoFieldsToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->uuid('cognito_uuid')->nullable()->unique();
-            $table->string('cognito_groups', 120)->nullable();
+            // uncomment if you need cognito groups
+            // $table->string('cognito_groups', 120)->nullable();
         });
     }
 
@@ -29,6 +30,7 @@ class AddCognitoFieldsToUsersTable extends Migration
         if(Schema::hasColumn('users','cognito_uuid')) {
             Schema::table('users', function (Blueprint $table) {
                 $table->dropColumn('cognito_uuid');
+                // uncomment if you need cognito groups
                 $table->dropColumn('cognito_groups');
             });
         }

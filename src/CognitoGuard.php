@@ -53,6 +53,7 @@ class CognitoGuard implements Guard
 
         $payload = $ts->getPayloadFromToken($jwt);
         $cognitoUuid = $ts->getCognitoUuidFromPayload($payload);
+        $cognitoGroups = null;
         if (config('cognito.sso_groups')) {
             $cognitoGroups = $ts->getCognitoGroupsFromPayload($payload, false);
         }
