@@ -38,7 +38,12 @@ class ProviderRepository
      */
     public function getCognitoUser(string $cognitoUuid, $jwt, $cognitoGroups) {
         $model = $this->provider->createModel();
-        $user = $model->where('cognito_uuid', $cognitoUuid)->first();
+        // this will get even soft-deleted accounts
+        $user = $model->withTrashed()->where('cognito_uuid', $cognitoUuid)->first();
+        // if soft-deleted return null
+        if ($user->deleted_at) {
+            return null; // this will cause the middleware to return unauthorized
+        }
 
         if ($user) {
             return $user;
