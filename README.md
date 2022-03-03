@@ -82,9 +82,12 @@ Finally, depending on how you configured your Cognito User Pool's required attri
 'sso'                   => env('SSO', false),
 'sso_repository_class'  => null,
 'sso_user_attributes'   => [
-    'name',
-    'email',
-    ]
+    'email' => 'email',
+    'phone_number' => 'phone',
+    'custom:country_id' => 'countries_id',
+    'custom:language_id' => 'languages_id',
+    'custom:invite_id' => 'invite_id',
+]
 ```
 
 Configuring an sso_repository_class is optional but doing so allows you to 
@@ -109,6 +112,16 @@ class UserRepository
     }
 }
 ```
+## Atticus
+### how to make updates this forked repo and test in atticus-web-dev
+- make changes locally directly in vendor/theatticusapp/cognito-jwt-guard
+- test changes
+- create a branch in this forked cognito-jwt-guard and apply changes
+- merge changes into master
+- [create a new release with a semantic version tag](https://github.com/TheAtticusApp/cognito-jwt-guard/releases/new)
+- update the version number in the atticus-web-dev composer.json file
+- pull that version into your local using ./scripts/docker-exec composer install
+- the new version will automatically be pulled into integration environments during install
 
 ## Security
 
