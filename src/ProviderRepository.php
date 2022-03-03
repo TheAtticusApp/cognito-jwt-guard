@@ -68,13 +68,19 @@ class ProviderRepository
 
         $attributes = $this->getAttributes($jwt);
         $attributeKeys = collect(config('cognito.sso_user_attributes'));
+        // cognito.sso_user_attributes will contain key/value pairs as follows:
+        //  '{cognito_field_name}' => '{sql_field_name}',
+        //  'email' => 'email',
+        //  'phone_number' => 'phone',
+        //  'custom:country_id' => 'countries_id',
+        //  'custom:language_id' => 'languages_id',
 
         $user = $this->provider->createModel();
         $user->cognito_uuid = $cognitoUuid;
-        foreach($attributeKeys as $attributeKey){
-            $key = strpos($attributeKey, 'custom:', 0) ? substr($attributeKey, 7) : $attributeKey;
+        foreach($attributeKeys as $cognitoAttribute => $sqlField){
+            $key = strpos($cognitoAttribute, 'custom:', 0) ? substr($cognitoAttribute, 7) : $cognitoAttribute;
             try {
-                $user->$key = $attributes[$key];
+                $user->$sqlField = $attributes[$key];
             } catch (Exception $e) {
                 // if config('error_if_missing_attr') will be caught in getAttributes
             }
