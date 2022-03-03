@@ -118,9 +118,14 @@ class UserRepository
 - test changes
 - create a branch in this forked cognito-jwt-guard and apply changes
 - merge changes into master
-- [create a new release with a semantic version tag](https://github.com/TheAtticusApp/cognito-jwt-guard/releases/new)
+- create a new release with a semantic version tag
+  - pull down the lastest from master that you want to tag
+  - > git tag (will return existing tags)
+  - > git tag v#.#.# (will add a tag to the current checksum) (ex: v0.4.0)
+  - > git push origin --tags (will push the tag up to origin/github)
 - update the version number in the atticus-web-dev composer.json file
-- pull that version into your local using ./scripts/docker-exec composer install
+  - > composer require theatticusapp/cognito-jwt-guard:0.4.0
+  - this should update the version number in the composer.json file also
 - the new version will automatically be pulled into integration environments during install
 
 ## Security
